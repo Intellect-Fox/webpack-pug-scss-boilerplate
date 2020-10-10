@@ -30,7 +30,15 @@ module.exports = {
         test: /\.(png|svg|jp?g|gif)$/,
         loader: 'file-loader',
         options: {
-          name: 'assets/images/[name].[ext]',
+          name: 'assets/images/[hash].[ext]',
+        },
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'assets/fonts/[hash].[ext]',
+          publicPath: '../',
         },
       },
     ],
