@@ -9,4 +9,16 @@ module.exports = merge(webpackConfigBase, {
     hot: true,
     open: true,
   },
+  module: {
+    rules: [
+      {
+        test: /\.(png|svg|jp?g|gif)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'assets/images/[hash].[ext]',
+          publicPath: '../',
+        },
+      },
+    ],
+  },
 });
