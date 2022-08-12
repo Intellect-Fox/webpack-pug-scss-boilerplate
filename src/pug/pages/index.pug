@@ -1,8 +1,8 @@
-doctype html
-head
-  meta(charset='UTF-8')
-  title Hello, World!
-body
+include ../components/page
+
+- var pageInfo = { title: 'Hello, World!' };
+
++page(pageInfo)
   h1 Hello, World!
-  img(src=require('../../assets/images/code.png').default alt='code')
+  img(src=require('../../assets/images/code.png') alt='code')
   .img

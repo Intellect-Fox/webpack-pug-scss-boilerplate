@@ -1,47 +1,50 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const PugPlugin = require('pug-plugin');
 
 module.exports = {
   entry: {
-    styles: path.resolve(__dirname, '../src/styles/index.scss'),
     index: path.resolve(__dirname, '../src/pug/pages/index.pug'),
-    app: path.resolve(__dirname, '../src/js/index.js'),
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: "scripts/bundle.[hash].js",
+    filename: 'scripts/[name].[fullhash].js',
+    assetModuleFilename: 'assets/[hash][ext][query]',
   },
   module: {
     rules: [
       {
         test: /\.pug$/,
-        use: ['pug-loader'],
+        loader: PugPlugin.loader,
+        options: {
+          method: 'render',
+        },
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
+        test: /\.(css|sass|scss)$/,
+        use: ['css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.(png|svg|jp?g|gif)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[hash][ext]',
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: 'file-loader',
-        options: {
-          name: 'assets/fonts/[hash].[ext]',
-          publicPath: '../',
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[hash][ext]',
         },
       },
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src/pug/pages/index.pug'),
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'styles/[name].[hash].css',
+    new PugPlugin({
+      extractCss: {
+        // output filename of CSS files
+        filename: 'styles/[name].[contenthash:8].css',
+      },
     }),
   ],
 };
